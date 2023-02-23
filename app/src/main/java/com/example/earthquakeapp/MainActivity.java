@@ -23,18 +23,20 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 
-
+// Name: Brian Koome
+// Student ID: S2004892
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText date;
-    private TextView dataDisplay;
+    private TextView dataDisplayMagnitude, dataDisplayDepth;
     private final String urlSource = "http://quakes.bgs.ac.uk/feeds/WorldSeismology.xml";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        dataDisplay = findViewById(R.id.dataDisplay);
+        dataDisplayMagnitude = findViewById(R.id.dataDisplayMagnitude);
+        dataDisplayDepth = findViewById(R.id.dataDisplayDepth);
         date = findViewById(R.id.date);
         date.setOnClickListener(this);
 
@@ -134,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void run() {
                     Log.d("UI thread", "I am the UI thread");
                     showLargestMagnitude(items);
+                    showDeepest(items);
                 }
             });
         }
@@ -151,9 +154,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // Check the earthquake object from the items array with the highest magnitude value
             // and then display it as text for the dataDisplay text.
             for (Earthquake data1 : items) {
-                double magnitudeValue = Double.parseDouble(getMagnitude(data1.getDescription()));
-                if (magnitudeValue == highestMagnitude) {
-                    dataDisplay.setText(String.format("%s\n", data1.getTitle()));
+                double magnitudeValue1 = Double.parseDouble(getMagnitude(data1.getDescription()));
+                if (magnitudeValue1 == highestMagnitude) {
+                    dataDisplayMagnitude.setText(String.format("%s\n", data1.getTitle()));
+                }
+            }
+        }
+
+        private void showDeepest(ArrayList<Earthquake> items) {
+            ArrayList<Double> depthValues = new ArrayList<>();
+            // Extract the depth information, of type double, from the description section of the earthquake object and add to an arraylist.
+            for (Earthquake data : items) {
+                double depthValue = Double.parseDouble(getDepth(data.getDescription()));
+                depthValues.add(depthValue);
+            }
+            // Check the highest depth value.
+            double highestDepth = Collections.max(depthValues);
+            // Check the earthquake object from the items array with the highest depth value
+            // and then display it as text for the dataDisplay text.
+            for (Earthquake data1 : items) {
+                double depthValue1 = Double.parseDouble(getDepth(data1.getDescription()));
+                if (depthValue1 == highestDepth) {
+                    dataDisplayDepth.setText(String.format("%s\n", data1.getTitle()));
                 }
             }
         }
@@ -166,15 +188,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         private String getDepth(String desc) {
             String[] descContent = desc.split(" ; ");
-            String[] location = descContent[3].split(": ");
-            return location[1];
+            String[] depth = descContent[3].split(": ");
+            String[] depthValue = depth[1].split(" ");
+            return depthValue[0];
         }
 
         // Method for extracting the magnitude information from the description data part.
         private String getMagnitude(String desc) {
+            // Split the whole description information.
             String[] descContent = desc.split(" ; ");
-            String[] location = descContent[4].split(": ");
-            return location[1];
+            // Split the specific magnitude information into the label section and the value section.
+            String[] magnitude = descContent[4].split(": ");
+            return magnitude[1];
         }
     }
 
