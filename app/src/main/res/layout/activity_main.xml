@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20sp"
+            android:background="@color/brown"
+            android:layout_marginBottom="20sp">
+
+            <EditText
+                android:id="@+id/earthquakeName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Search earthquake by name"
+                android:inputType="text"
+                android:background="@drawable/edit_text_border"
+                style="@style/editText"/>
+            <Button
+                android:id="@+id/searchName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search by name"
+                style="@style/searchButton"/>
+            <EditText
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Search earthquake by date"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:background="@drawable/edit_text_border"
+                style="@style/editText"/>
+            <Button
+                android:id="@+id/searchDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search by date"
+                style="@style/searchButton"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Largest magnitude earthquake (within last 100 days)"
+            style="@style/textViewHeading"/>
+        <TextView
+            android:id="@+id/dataDisplay"
+            android:layout_width="300sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            style="@style/dataResultTextView"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View more"
+            style="@style/searchButton"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Deepest earthquake (within last 100 days)"
+            style="@style/textViewHeading"/>
+    </LinearLayout>
+</ScrollView>
