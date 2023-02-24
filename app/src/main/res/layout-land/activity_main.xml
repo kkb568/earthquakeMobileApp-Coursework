@@ -31,7 +31,7 @@
                 android:id="@+id/searchByLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Search by location"
+                android:text="Search by name"
                 style="@style/searchButton"/>
             <EditText
                 android:id="@+id/date"
@@ -59,13 +59,11 @@
             style="@style/textViewHeading"/>
         <TextView
             android:id="@+id/dataDisplayMagnitude"
-            android:layout_width="300sp"
+            android:layout_width="500sp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text=""
             style="@style/dataResultTextView"/>
         <Button
-            android:id="@+id/largestMagnitudeContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="View more"
@@ -77,13 +75,11 @@
             style="@style/textViewHeading"/>
         <TextView
             android:id="@+id/dataDisplayDepth"
-            android:layout_width="300sp"
+            android:layout_width="500sp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text=""
             style="@style/dataResultTextView"/>
         <Button
-            android:id="@+id/deepestEarthquakeContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="View more"

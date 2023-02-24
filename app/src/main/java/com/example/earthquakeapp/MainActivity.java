@@ -3,9 +3,11 @@ package com.example.earthquakeapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private EditText date;
     private TextView dataDisplayMagnitude, dataDisplayDepth;
-    private final String urlSource = "http://quakes.bgs.ac.uk/feeds/WorldSeismology.xml";
+    ArrayList<Earthquake> items = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         date = findViewById(R.id.date);
         date.setOnClickListener(this);
 
+        Button largestMagnitudeContent = findViewById(R.id.largestMagnitudeContent);
+        largestMagnitudeContent.setOnClickListener(this);
+
         Log.e("MyTag","in onClick");
+        String urlSource = "http://quakes.bgs.ac.uk/feeds/WorldSeismology.xml";
         new Thread(new Task(urlSource)).start();
         Log.e("MyTag","after startProgress");
     }
@@ -61,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             URLConnection yc;
             InputStream stream = null;
             Earthquake eq = new Earthquake();
-            ArrayList<Earthquake> items = new ArrayList<>();
 
             Log.e("MyTag","in run");
 
@@ -179,33 +184,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
-
-        private String getLocation (String desc) {
-            String[] descContent = desc.split(" ; ");
-            String[] location = descContent[1].split(": ");
-            return location[1];
-        }
-
-        private String getDepth(String desc) {
-            String[] descContent = desc.split(" ; ");
-            String[] depth = descContent[3].split(": ");
-            String[] depthValue = depth[1].split(" ");
-            return depthValue[0];
-        }
-
-        // Method for extracting the magnitude information from the description data part.
-        private String getMagnitude(String desc) {
-            // Split the whole description information.
-            String[] descContent = desc.split(" ; ");
-            // Split the specific magnitude information into the label section and the value section.
-            String[] magnitude = descContent[4].split(": ");
-            return magnitude[1];
-        }
     }
 
     public void onClick(View v) {
         if(v == date) {
             setCalendar();
+        }
+        // TO BE CONFIRMED WHY IT'S NOT WORKING.
+        else if(v.getId() == R.id.largestMagnitudeContent) {
+            viewDetailedContent(dataDisplayMagnitude);
         }
     }
 
@@ -227,6 +214,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 },
                 year,month,day);
         dpd.show();
+    }
+
+    public void viewDetailedContent(TextView tv) {
+        String title = tv.getText().toString();
+        for (Earthquake data : items) {
+            if (data.getTitle().equals(title)) {
+                Intent i = new Intent(MainActivity.this, SpecificEarthquakeDetails.class);
+                i.putExtra("location", getLocation(data.getDescription()));
+                i.putExtra("latitude", data.getLatitude());
+                i.putExtra("longitude", data.getLongitude());
+                i.putExtra("date/time", data.getPublishedDate());
+                i.putExtra("depth", getDepth(data.getDescription()));
+                i.putExtra("magnitude", getMagnitude(data.getDescription()));
+                startActivity(i);
+            }
+        }
+    }
+
+    private String getLocation (String desc) {
+        String[] descContent = desc.split(" ; ");
+        String[] location = descContent[1].split(": ");
+        return location[1];
+    }
+
+    private String getDepth(String desc) {
+        String[] descContent = desc.split(" ; ");
+        String[] depth = descContent[3].split(": ");
+        String[] depthValue = depth[1].split(" ");
+        return depthValue[0];
+    }
+
+    // Method for extracting the magnitude information from the description data part.
+    private String getMagnitude(String desc) {
+        // Split the whole description information e.g Magnitude.
+        String[] descContent = desc.split(" ; ");
+        // Split the specific magnitude information into the label section and the value section.
+        String[] magnitude = descContent[4].split(": ");
+        return magnitude[1];
     }
 }
 
