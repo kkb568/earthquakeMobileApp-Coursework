@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             for (Earthquake data1 : items) {
                 double magnitudeValue1 = Double.parseDouble(getMagnitude(data1.getDescription()));
                 if (magnitudeValue1 == highestMagnitude) {
-                    dataDisplayMagnitude.setText(String.format("%s\n", data1.getTitle()));
+                    dataDisplayMagnitude.setText(String.format("%s", data1.getTitle()));
                 }
             }
         }
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             for (Earthquake data1 : items) {
                 double depthValue1 = Double.parseDouble(getDepth(data1.getDescription()));
                 if (depthValue1 == highestDepth) {
-                    dataDisplayDepth.setText(String.format("%s\n", data1.getTitle()));
+                    dataDisplayDepth.setText(String.format("%s", data1.getTitle()));
                 }
             }
         }
