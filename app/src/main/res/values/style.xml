@@ -26,4 +26,9 @@
         <item name="android:padding">10sp</item>
         <item name="android:background">@drawable/data_result</item>
     </style>
+    <style name="earthquakeDetailsTextView">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">10sp</item>
+    </style>
 </resources>

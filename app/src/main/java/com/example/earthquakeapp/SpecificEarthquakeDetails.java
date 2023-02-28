@@ -30,11 +30,11 @@ public class SpecificEarthquakeDetails extends AppCompatActivity {
         String getDepth = i.getStringExtra("depth");
         String getMagnitude = i.getStringExtra("magnitude");
 
-        locationDetails.setText(getLocation);
-        latitudeDetails.setText(getLatitude);
-        longitudeDetails.setText(getLongitude);
-        dateTimeDetails.setText(getDateTime);
-        depthDetails.setText(getDepth);
-        magnitudeDetails.setText(getMagnitude);
+        locationDetails.setText(String.format("Location: %s", getLocation));
+        latitudeDetails.setText(String.format("Latitude: %s°", getLatitude));
+        longitudeDetails.setText(String.format("Longitude: %s°", getLongitude));
+        dateTimeDetails.setText(String.format("Date and time: %s", getDateTime));
+        depthDetails.setText(String.format("Depth: %s km", getDepth));
+        magnitudeDetails.setText(String.format("Magnitude: %s", getMagnitude));
     }
 }

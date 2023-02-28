@@ -15,31 +15,37 @@
             android:id="@+id/locationDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""/>
+            android:text=""
+            style="@style/earthquakeDetailsTextView"/>
         <TextView
             android:id="@+id/latitudeDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""/>
+            android:text=""
+            style="@style/earthquakeDetailsTextView"/>
         <TextView
             android:id="@+id/longitudeDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""/>
+            android:text=""
+            style="@style/earthquakeDetailsTextView"/>
         <TextView
             android:id="@+id/dateTimeDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""/>
+            android:text=""
+            style="@style/earthquakeDetailsTextView"/>
         <TextView
             android:id="@+id/depthDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""/>
+            android:text=""
+            style="@style/earthquakeDetailsTextView"/>
         <TextView
             android:id="@+id/magnitudeDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""/>
+            android:text=""
+            style="@style/earthquakeDetailsTextView"/>
     </LinearLayout>
 </ScrollView>

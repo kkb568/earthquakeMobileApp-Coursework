@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private EditText date;
     private TextView dataDisplayMagnitude, dataDisplayDepth;
+    private Button largestMagnitudeContent, deepestEarthquakeContent, searchByLocation;
     ArrayList<Earthquake> items = new ArrayList<>();
 
     @Override
@@ -42,11 +44,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         date = findViewById(R.id.date);
         date.setOnClickListener(this);
 
-        Button largestMagnitudeContent = findViewById(R.id.largestMagnitudeContent);
+        largestMagnitudeContent = findViewById(R.id.largestMagnitudeContent);
         largestMagnitudeContent.setOnClickListener(this);
 
+        deepestEarthquakeContent = findViewById(R.id.deepestEarthquakeContent);
+        deepestEarthquakeContent.setOnClickListener(this);
+
+        searchByLocation = findViewById(R.id.searchByLocation);
+        searchByLocation.setOnClickListener(this);
+
         Log.e("MyTag","in onClick");
-        String urlSource = "http://quakes.bgs.ac.uk/feeds/WorldSeismology.xml";
+        String urlSource = "https://quakes.bgs.ac.uk/feeds/WorldSeismology.xml";
         new Thread(new Task(urlSource)).start();
         Log.e("MyTag","after startProgress");
     }
@@ -190,9 +198,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(v == date) {
             setCalendar();
         }
-        // TO BE CONFIRMED WHY IT'S NOT WORKING.
-        else if(v.getId() == R.id.largestMagnitudeContent) {
+        else if (v == largestMagnitudeContent) {
             viewDetailedContent(dataDisplayMagnitude);
+        }
+
+        else if (v == deepestEarthquakeContent) {
+            viewDetailedContent(dataDisplayDepth);
+        }
+        else if (v == searchByLocation) {
+            displayEarthquakeByLocation();
         }
     }
 
@@ -216,6 +230,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dpd.show();
     }
 
+    // The method below opens a new page showing the detailed earthquake information on the specific_earthquake_details activity.
+    // This is done by creating a new intent instance and starting the activity through the new instance.
+    // For example, when the user clicks on 'View More' button below the largest magnitude earthquake information on the main activity,
+    // the method looks through which earthquake instance contains the title as same as the information and when found,
+    // it gets the other information about the earthquake, such as depth and magnitude, and inserts it to the specific_earthquake_details activity.
     public void viewDetailedContent(TextView tv) {
         String title = tv.getText().toString();
         for (Earthquake data : items) {
@@ -253,12 +272,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String[] magnitude = descContent[4].split(": ");
         return magnitude[1];
     }
-}
 
-//dataDisplay.setText(String.format("%s\nTitle: %s\n", dataDisplay.getText(), data.getTitle()));
-//dataDisplay.setText(String.format("%s\nLocation: %s\n", dataDisplay.getText(), getLocation(data.getDescription())));
-//dataDisplay.setText(String.format("%s\nDepth: %s\n", dataDisplay.getText(), getDepth(data.getDescription())));
-//dataDisplay.setText(String.format("%s\nMagnitude: %s\n", dataDisplay.getText(), getMagnitude(data.getDescription())));
-//dataDisplay.setText(String.format("%s\nPublished date: %s\n", dataDisplay.getText(), data.getPublishedDate()));
-//dataDisplay.setText(String.format("%s\nLatitude: %s\n", dataDisplay.getText(), data.getLatitude()));
-//dataDisplay.setText(String.format("%s\nLongitude: %s\n", dataDisplay.getText(), data.getLongitude()));
+    public void displayEarthquakeByLocation() {
+        TextView insertedLocation = findViewById(R.id.earthquakeLocation);
+        String location = insertedLocation.getText().toString();
+        ArrayList<String> titles = new ArrayList<>();
+        if (location.equals("")) {
+            String nullMessage = "Please enter a location.";
+            Toast.makeText(getApplicationContext(), nullMessage, Toast.LENGTH_LONG).show();
+        }
+        for (Earthquake data : items) {
+            String dataLocation = getLocation(data.getDescription());
+            if (location.equalsIgnoreCase(dataLocation)) {
+                Intent i = new Intent(MainActivity.this, ListEarthquakes.class);
+                titles.add(data.getTitle());
+                i.putStringArrayListExtra("Titles", titles);
+                startActivity(i);
+            }
+        }
+    }
+}
