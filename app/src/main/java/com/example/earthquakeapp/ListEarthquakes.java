@@ -2,7 +2,6 @@ package com.example.earthquakeapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +17,7 @@ public class ListEarthquakes extends AppCompatActivity {
         ListView listEarthquakes = findViewById(R.id.listEarthquakes);
         Intent i = getIntent();
         ArrayList<String> titles = i.getStringArrayListExtra("Titles");
-        ArrayAdapter<String> arr = new ArrayAdapter<>(this, R.layout.list_earthquakes_text_view, titles);
-        listEarthquakes.setAdapter(arr);
+        TitleAdapter titleAdapter = new TitleAdapter(this, titles);
+        listEarthquakes.setAdapter(titleAdapter);
     }
 }
