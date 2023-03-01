@@ -22,9 +22,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
+import java.util.Locale;
 
 // Name: Brian Koome
 // Student ID: S2004892
@@ -32,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private EditText date;
     private TextView dataDisplayMagnitude, dataDisplayDepth;
-    private Button largestMagnitudeContent, deepestEarthquakeContent, searchByLocation;
+    private Button largestMagnitudeContent, deepestEarthquakeContent, searchByLocation, searchByDate;
     ArrayList<Earthquake> items = new ArrayList<>();
 
     @Override
@@ -52,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         searchByLocation = findViewById(R.id.searchByLocation);
         searchByLocation.setOnClickListener(this);
+
+        searchByDate = findViewById(R.id.searchByDate);
+        searchByDate.setOnClickListener(this);
 
         Log.e("MyTag","in onClick");
         String urlSource = "https://quakes.bgs.ac.uk/feeds/WorldSeismology.xml";
@@ -208,6 +215,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if (v == searchByLocation) {
             displayEarthquakeByLocation();
         }
+        else if (v == searchByDate) {
+            displayEarthquakeByDate();
+        }
     }
 
     // Used to show the calendar when user searches for earthquake by date
@@ -223,7 +233,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        date.setText(String.format("%d/%d/%d", dayOfMonth, month + 1, year));
+                        String selectedDate = String.format(Locale.ENGLISH,"%d/%d/%d", dayOfMonth, month + 1, year);
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+                        try {
+                            Date stringDate = formatter.parse(selectedDate);
+                            SimpleDateFormat formatter1 = new SimpleDateFormat("E, dd MMM yyyy", Locale.ENGLISH);
+                            String stringDate1 = formatter1.format(stringDate);
+                            date.setText(stringDate1);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 year,month,day);
@@ -273,22 +292,78 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return magnitude[1];
     }
 
+    // Method for showcasing the listview page of earthquakes that have the same location as the one inserted by the user on the 'Search earthquake by location' edittext view.
     public void displayEarthquakeByLocation() {
-        TextView insertedLocation = findViewById(R.id.earthquakeLocation);
+        EditText insertedLocation = findViewById(R.id.earthquakeLocation);
+        // Convert input to string.
         String location = insertedLocation.getText().toString();
+        // Create new arraylist of type string.
         ArrayList<String> titles = new ArrayList<>();
+        // Check if the input is an empty string.
+        // If the input is empty, send an error message and break the method from continuing.
         if (location.equals("")) {
             String nullMessage = "Please enter a location.";
             Toast.makeText(getApplicationContext(), nullMessage, Toast.LENGTH_LONG).show();
+            return;
         }
+        // Variable used to indicate if any earthquake is found.
+        boolean foundLocation = false;
         for (Earthquake data : items) {
+            // Get the location details from the description part for each earthquake instance.
             String dataLocation = getLocation(data.getDescription());
+            // If the location details is same as the input, the instance with the details is added to the arraylist, which is added to the Intent instance
+            // and the foundLocation is set to true.
+            // The Intent instance is then used to open a new activity showing list of all earthquakes with the same location details as the input.
             if (location.equalsIgnoreCase(dataLocation)) {
+                foundLocation = true;
                 Intent i = new Intent(MainActivity.this, ListEarthquakes.class);
                 titles.add(data.getTitle());
                 i.putStringArrayListExtra("Titles", titles);
                 startActivity(i);
             }
+        }
+        // Check if the foundLocation is still false after looping through all earthquake instances in the items arraylist.
+        if (!foundLocation) {
+            String notFoundMessage = "Earthquake not found.";
+            Toast.makeText(getApplicationContext(), notFoundMessage, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    // Method for showcasing the listview page of earthquakes that have the same location as the one inserted by the user on the 'Search earthquake by date' edittext view.
+    public void displayEarthquakeByDate() {
+        EditText insertedDate = findViewById(R.id.date);
+        // Convert input to string
+        String date = insertedDate.getText().toString();
+        // Check if the input is an empty string.
+        // If the input is empty, send an error message and break the method from continuing.
+        if (date.equals("")) {
+            String nullMessage = "Please enter a date.";
+            Toast.makeText(getApplicationContext(), nullMessage, Toast.LENGTH_LONG).show();
+            return;
+        }
+        // Create new arraylist of type string
+        ArrayList<String> titles = new ArrayList<>();
+        // Variable used to indicate if any earthquake is found.
+        boolean foundDate = false;
+        for (Earthquake data1 : items) {
+            String publishedDate = data1.getPublishedDate();
+            // Extract the date part (without the hour, minute and second part) from the publishedDate field for each earthquake instance.
+            String earthquakeDate = publishedDate.substring(0, 16);
+            // If the date part is same as the input, the instance with the date part is added to the arraylist, which is added to the Intent instance
+            // and the foundDate is set to true.
+            // The Intent instance is then used to open a new activity showing list of all earthquakes with the same date part details as the input.
+            if (date.equalsIgnoreCase(earthquakeDate)) {
+                foundDate = true;
+                Intent i = new Intent(MainActivity.this, ListEarthquakes.class);
+                titles.add(data1.getTitle());
+                i.putStringArrayListExtra("Titles", titles);
+                startActivity(i);
+            }
+        }
+        // Check if the foundDate is still false after looping through all earthquake instances in the items arraylist.
+        if (!foundDate) {
+            String notFoundMessage = "Earthquake not found.";
+            Toast.makeText(getApplicationContext(), notFoundMessage, Toast.LENGTH_LONG).show();
         }
     }
 }
