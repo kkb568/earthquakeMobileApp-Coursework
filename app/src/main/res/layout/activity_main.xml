@@ -55,7 +55,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Largest magnitude earthquake (within last 100 days)"
+            android:text="Largest magnitude earthquake (within last 60 days)"
             style="@style/textViewHeading"/>
         <TextView
             android:id="@+id/dataDisplayMagnitude"
@@ -73,7 +73,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Deepest earthquake (within last 100 days)"
+            android:text="Deepest earthquake (within last 60 days)"
             style="@style/textViewHeading"/>
         <TextView
             android:id="@+id/dataDisplayDepth"

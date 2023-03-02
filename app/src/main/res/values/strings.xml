@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">earthquakeApp</string>
     <string name="list_heading">Click item(s) to view more details</string>
+    <string name="colorRepresentation">
+        The colors showcase level of magnitude for each earthquake, from light blue (less than 6.0, weak),
+        light green (6.0-6.5, moderate), yellow (6.5-7.0, strong), orange (7.0-7.5, very strong) to
+        red (7.5 and above, violent).
+    </string>
 </resources>

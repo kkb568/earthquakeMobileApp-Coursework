@@ -295,8 +295,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // Method for showcasing the listview page of earthquakes that have the same location as the one inserted by the user on the 'Search earthquake by location' edittext view.
     public void displayEarthquakeByLocation() {
         EditText insertedLocation = findViewById(R.id.earthquakeLocation);
-        // Convert input to string.
-        String location = insertedLocation.getText().toString();
+        // Convert input to string, with whitespaces at the end of the string already removed.
+        String location = insertedLocation.getText().toString().stripTrailing();
         // Create new arraylist of type string.
         ArrayList<String> titles = new ArrayList<>();
         // Check if the input is an empty string.
@@ -313,26 +313,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String dataLocation = getLocation(data.getDescription());
             // If the location details is same as the input, the instance with the details is added to the arraylist, which is added to the Intent instance
             // and the foundLocation is set to true.
-            // The Intent instance is then used to open a new activity showing list of all earthquakes with the same location details as the input.
             if (location.equalsIgnoreCase(dataLocation)) {
                 foundLocation = true;
-                Intent i = new Intent(MainActivity.this, ListEarthquakes.class);
                 titles.add(data.getTitle());
-                i.putStringArrayListExtra("Titles", titles);
-                startActivity(i);
             }
         }
         // Check if the foundLocation is still false after looping through all earthquake instances in the items arraylist.
         if (!foundLocation) {
             String notFoundMessage = "Earthquake not found.";
             Toast.makeText(getApplicationContext(), notFoundMessage, Toast.LENGTH_LONG).show();
+            return;
         }
+        // The Intent instance is then used to open a new activity showing list of all earthquakes with the same location details as the input.
+        Intent i = new Intent(MainActivity.this, ListEarthquakes.class);
+        i.putStringArrayListExtra("Titles", titles);
+        i.putExtra("Earthquakes", items);
+        startActivity(i);
     }
 
     // Method for showcasing the listview page of earthquakes that have the same location as the one inserted by the user on the 'Search earthquake by date' edittext view.
     public void displayEarthquakeByDate() {
         EditText insertedDate = findViewById(R.id.date);
-        // Convert input to string
+        // Convert input to string.
         String date = insertedDate.getText().toString();
         // Check if the input is an empty string.
         // If the input is empty, send an error message and break the method from continuing.
@@ -351,19 +353,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String earthquakeDate = publishedDate.substring(0, 16);
             // If the date part is same as the input, the instance with the date part is added to the arraylist, which is added to the Intent instance
             // and the foundDate is set to true.
-            // The Intent instance is then used to open a new activity showing list of all earthquakes with the same date part details as the input.
             if (date.equalsIgnoreCase(earthquakeDate)) {
                 foundDate = true;
-                Intent i = new Intent(MainActivity.this, ListEarthquakes.class);
                 titles.add(data1.getTitle());
-                i.putStringArrayListExtra("Titles", titles);
-                startActivity(i);
             }
         }
         // Check if the foundDate is still false after looping through all earthquake instances in the items arraylist.
         if (!foundDate) {
             String notFoundMessage = "Earthquake not found.";
             Toast.makeText(getApplicationContext(), notFoundMessage, Toast.LENGTH_LONG).show();
+            return;
         }
+        // The Intent instance is then used to open a new activity showing list of all earthquakes with the same date part details as the input.
+        Intent i = new Intent(MainActivity.this, ListEarthquakes.class);
+        i.putStringArrayListExtra("Titles", titles);
+        i.putExtra("Earthquakes", items);
+        startActivity(i);
     }
 }
