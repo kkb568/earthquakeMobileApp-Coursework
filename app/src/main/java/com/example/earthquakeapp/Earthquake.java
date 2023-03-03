@@ -16,15 +16,6 @@ public class Earthquake {
         longitude = "";
     }
 
-    public Earthquake(String tt,String dp,String pd, String lat, String lon)
-    {
-        title = tt;
-        description = dp;
-        publishedDate = pd;
-        latitude = lat;
-        longitude = lon;
-    }
-
     public String getTitle() {
         return title;
     }

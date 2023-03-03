@@ -270,26 +270,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    // Method for extracting the location information from the description data part.
     private String getLocation (String desc) {
+        // Split the whole description information using the specified delimiter ' ; '.
         String[] descContent = desc.split(" ; ");
+        // Split the specific location information (for example, Location: BISMARCK SEA) into the label section and the value section.
         String[] location = descContent[1].split(": ");
-        return location[1];
+        return location[1]; // That is, 'BISMARCK SEA'.
     }
 
+    // Method for extracting the depth information from the description data part.
     private String getDepth(String desc) {
+        // Split the whole description information using the specified delimiter ' ; '.
         String[] descContent = desc.split(" ; ");
+        // Split the specific depth information (for example, Depth: 598 km) into the label section and the value section.
         String[] depth = descContent[3].split(": ");
+        // Split the value section (598 km) into the number and the sign ('km') section.
         String[] depthValue = depth[1].split(" ");
-        return depthValue[0];
+        return depthValue[0]; // That is '598'.
     }
 
     // Method for extracting the magnitude information from the description data part.
     private String getMagnitude(String desc) {
-        // Split the whole description information e.g Magnitude.
+        // Split the whole description information using the specified delimiter ' ; '.
         String[] descContent = desc.split(" ; ");
-        // Split the specific magnitude information into the label section and the value section.
+        // Split the specific magnitude information (for example, Magnitude: 6.5) into the label section and the value section.
         String[] magnitude = descContent[4].split(": ");
-        return magnitude[1];
+        return magnitude[1]; // That is, 6.5
     }
 
     // Method for showcasing the listview page of earthquakes that have the same location as the one inserted by the user on the 'Search earthquake by location' edittext view.
@@ -327,7 +334,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // The Intent instance is then used to open a new activity showing list of all earthquakes with the same location details as the input.
         Intent i = new Intent(MainActivity.this, ListEarthquakes.class);
         i.putStringArrayListExtra("Titles", titles);
-        i.putExtra("Earthquakes", items);
         startActivity(i);
     }
 
