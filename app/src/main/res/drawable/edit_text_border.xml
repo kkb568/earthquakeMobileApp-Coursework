@@ -2,9 +2,7 @@
 <!-- selector xmlns:android="http://schemas.android.com/apk/res/android" -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
     <item>
-        <shape
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:shape="rectangle">
+        <shape android:shape="rectangle">
             <solid
                 android:color="@android:color/transparent"/>
             <corners
@@ -21,6 +19,5 @@
                 android:right="17dp"
                 android:bottom="17dp" />
         </shape>
-
     </item>
 </layer-list>

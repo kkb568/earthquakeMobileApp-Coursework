@@ -93,5 +93,18 @@
             android:layout_height="wrap_content"
             android:text="Nearest from Mauritius"
             style="@style/textViewHeading"/>
+        <Spinner
+            android:id="@+id/directionSpinner"
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/spinner"/>
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/direction_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20sp"
+            android:name="com.example.earthquakeapp.FragmentNorth"
+            tools:layout="@layout/fragment_northern"/>
     </LinearLayout>
 </ScrollView>

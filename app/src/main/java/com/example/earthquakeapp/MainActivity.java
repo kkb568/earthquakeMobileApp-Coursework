@@ -1,15 +1,21 @@
 package com.example.earthquakeapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText date;
     private TextView dataDisplayMagnitude, dataDisplayDepth;
     private Button largestMagnitudeContent, deepestEarthquakeContent, searchByLocation, searchByDate;
+    private Spinner spinner;
     ArrayList<Earthquake> items = new ArrayList<>();
 
     @Override
@@ -59,6 +66,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         searchByDate = findViewById(R.id.searchByDate);
         searchByDate.setOnClickListener(this);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.directions, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner = findViewById(R.id.directionSpinner);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (parent == spinner) {
+                    String text = spinner.getSelectedItem().toString();
+                    showFragment(text);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         Log.e("MyTag","in onClick");
         String urlSource = "https://quakes.bgs.ac.uk/feeds/WorldSeismology.xml";
@@ -373,7 +399,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // The Intent instance is then used to open a new activity showing list of all earthquakes with the same date part details as the input.
         Intent i = new Intent(MainActivity.this, ListEarthquakes.class);
         i.putStringArrayListExtra("Titles", titles);
-        i.putExtra("Earthquakes", items);
         startActivity(i);
+    }
+
+    public void showFragment(String text) {
+        Fragment fr = new Fragment();
+        switch (text) {
+            case "Northerly":
+                fr = new FragmentNorth();
+                break;
+            case "Southerly":
+                fr = new FragmentSouth();
+                break;
+            case "Westerly":
+                fr = new FragmentWest();
+                break;
+            case "Easterly":
+                fr = new FragmentEast();
+                break;
+        }
+        // Create new fragment manager.
+        FragmentManager fm = getSupportFragmentManager();
+        // Fragment transaction for replacing the current fragment to new fragment.
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.direction_fragment, fr);
+        // making a commit after the transaction
+        // to assure that the change is effective
+        ft.commit();
     }
 }
