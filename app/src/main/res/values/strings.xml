@@ -6,4 +6,5 @@
         light green (6.0-6.5, moderate), yellow (6.5-7.0, strong), orange (7.0-7.5, very strong) to
         red (7.5 and above, violent).
     </string>
+    <string name="viewMoreButton">View more</string>
 </resources>

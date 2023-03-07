@@ -68,7 +68,7 @@
             android:id="@+id/largestMagnitudeContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="View more"
+            android:text="@string/viewMoreButton"
             style="@style/searchButton"/>
         <TextView
             android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
             android:id="@+id/deepestEarthquakeContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="View more"
+            android:text="@string/viewMoreButton"
             style="@style/searchButton"/>
         <TextView
             android:layout_width="wrap_content"
