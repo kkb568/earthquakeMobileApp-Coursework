@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView dataDisplayMagnitude, dataDisplayDepth;
     private Button largestMagnitudeContent, deepestEarthquakeContent, searchByLocation, searchByDate;
     private Spinner spinner;
-    ArrayList<Earthquake> items = new ArrayList<>();
+    static ArrayList<Earthquake> items = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -402,7 +401,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(i);
     }
 
-    public void showFragment(String text) {
+    // Method for showing the fragment based on the selected value from the dropdown list (spinner).
+    private void showFragment(String text) {
         Fragment fr = new Fragment();
         switch (text) {
             case "Northerly":
@@ -423,8 +423,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Fragment transaction for replacing the current fragment to new fragment.
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.direction_fragment, fr);
-        // making a commit after the transaction
-        // to assure that the change is effective
+        // making a commit after the transaction to ensure that the change is effective.
         ft.commit();
     }
 }

@@ -7,4 +7,5 @@
         red (7.5 and above, violent).
     </string>
     <string name="viewMoreButton">View more</string>
+    <string name="dataDisplayNearest">No earthquake found.</string>
 </resources>

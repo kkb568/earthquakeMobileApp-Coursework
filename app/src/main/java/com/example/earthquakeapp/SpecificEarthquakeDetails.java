@@ -14,6 +14,8 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+// Name: Brian Koome
+// Student ID: S2004892
 public class SpecificEarthquakeDetails extends AppCompatActivity implements OnMapReadyCallback {
 
     TextView locationDetails, latitudeDetails, longitudeDetails,
@@ -52,6 +54,7 @@ public class SpecificEarthquakeDetails extends AppCompatActivity implements OnMa
         magnitudeDetails.setText(String.format("Magnitude: %s", getMagnitude));
     }
 
+    // Method for setting up the google map to the map view.
     private void setGoogleMap(Bundle savedInstanceState) {
         Bundle mapViewBundle = null;
         if (savedInstanceState != null) {
@@ -62,6 +65,7 @@ public class SpecificEarthquakeDetails extends AppCompatActivity implements OnMa
         mapView.getMapAsync(this);
     }
 
+    // Method for setting the marker for the specific earthquake location and zoom ui setting.
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         String getLatitude = getIntent().getStringExtra("latitude");

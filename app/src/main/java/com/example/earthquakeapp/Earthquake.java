@@ -1,5 +1,7 @@
 package com.example.earthquakeapp;
 
+// Name: Brian Koome
+// Student ID: S2004892
 public class Earthquake {
     private String title;
     private String description;
