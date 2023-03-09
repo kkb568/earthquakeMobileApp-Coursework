@@ -41,8 +41,8 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText date;
-    private TextView dataDisplayMagnitude, dataDisplayDepth;
-    private Button largestMagnitudeContent, deepestEarthquakeContent, searchByLocation, searchByDate;
+    private TextView dataDisplayMagnitude, dataDisplayDeepest, dataDisplayShallowest;
+    private Button largestMagnitudeContent, deepestEarthquakeContent, shallowestEarthquakeContent, searchByLocation, searchByDate;
     private Spinner spinner;
     static ArrayList<Earthquake> items = new ArrayList<>();
 
@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dataDisplayMagnitude = findViewById(R.id.dataDisplayMagnitude);
-        dataDisplayDepth = findViewById(R.id.dataDisplayDepth);
+        dataDisplayDeepest = findViewById(R.id.dataDisplayDeepest);
+        dataDisplayShallowest = findViewById(R.id.dataDisplayShallowest);
         date = findViewById(R.id.date);
         date.setOnClickListener(this);
 
@@ -60,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         deepestEarthquakeContent = findViewById(R.id.deepestEarthquakeContent);
         deepestEarthquakeContent.setOnClickListener(this);
+
+        shallowestEarthquakeContent = findViewById(R.id.shallowestEarthquakeContent);
+        shallowestEarthquakeContent.setOnClickListener(this);
 
         searchByLocation = findViewById(R.id.searchByLocation);
         searchByLocation.setOnClickListener(this);
@@ -82,6 +86,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                if (parent == spinner) {
+                    showDefaultFragment();
+                }
             }
         });
 
@@ -182,6 +189,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.d("UI thread", "I am the UI thread");
                     showLargestMagnitude(items);
                     showDeepest(items);
+                    showShallowest(items);
                 }
             });
         }
@@ -220,7 +228,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             for (Earthquake data1 : items) {
                 double depthValue1 = Double.parseDouble(getDepth(data1.getDescription()));
                 if (depthValue1 == highestDepth) {
-                    dataDisplayDepth.setText(String.format("%s", data1.getTitle()));
+                    dataDisplayDeepest.setText(String.format("%s", data1.getTitle()));
+                }
+            }
+        }
+
+        private void showShallowest(ArrayList<Earthquake> items) {
+            ArrayList<Double> depthValues = new ArrayList<>();
+            // Extract the depth information, of type double, from the description section of the earthquake object and add to an arraylist.
+            for (Earthquake data : items) {
+                double depthValue = Double.parseDouble(getDepth(data.getDescription()));
+                depthValues.add(depthValue);
+            }
+            // Check the lowest depth value.
+            double highestDepth = Collections.min(depthValues);
+            // Check the earthquake object from the items array with the lowest depth value.
+            // and then display it as text for the dataDisplay text.
+            for (Earthquake data1 : items) {
+                double depthValue1 = Double.parseDouble(getDepth(data1.getDescription()));
+                if (depthValue1 == highestDepth) {
+                    dataDisplayShallowest.setText(String.format("%s", data1.getTitle()));
                 }
             }
         }
@@ -233,9 +260,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if (v == largestMagnitudeContent) {
             viewDetailedContent(dataDisplayMagnitude);
         }
-
         else if (v == deepestEarthquakeContent) {
-            viewDetailedContent(dataDisplayDepth);
+            viewDetailedContent(dataDisplayDeepest);
+        }
+        else if (v == shallowestEarthquakeContent) {
+            viewDetailedContent(dataDisplayShallowest);
         }
         else if (v == searchByLocation) {
             displayEarthquakeByLocation();
@@ -418,6 +447,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 fr = new FragmentEast();
                 break;
         }
+        // Create new fragment manager.
+        FragmentManager fm = getSupportFragmentManager();
+        // Fragment transaction for replacing the current fragment to new fragment.
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.direction_fragment, fr);
+        // making a commit after the transaction to ensure that the change is effective.
+        ft.commit();
+    }
+
+    // Method used to show the default fragment when no value is selected from the dropdown list (spinner).
+    private void showDefaultFragment() {
+        // The default fragment will show the fragment_northern layout.
+        Fragment fr = new FragmentNorth();
         // Create new fragment manager.
         FragmentManager fm = getSupportFragmentManager();
         // Fragment transaction for replacing the current fragment to new fragment.

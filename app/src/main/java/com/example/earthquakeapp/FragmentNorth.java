@@ -72,6 +72,7 @@ public class FragmentNorth extends Fragment {
             // Done if the array has more than one earthquake instance.
             else {
                 double minLatitudeValue = Double.parseDouble(eq.get(0).getLatitude());
+                textView.setText(eq.get(0).getTitle());
                 // Loop to find the minimum latitude value from arraylist.
                 for (int i = 1; i < lengthArray; i++) {
                     double latValue = Double.parseDouble(eq.get(i).getLatitude());

@@ -72,6 +72,7 @@ public class FragmentWest extends Fragment {
             // Done if the array has more than one earthquake instance.
             else {
                 double maxLongitudeValue = Double.parseDouble(eq.get(0).getLongitude());
+                textView.setText(eq.get(0).getTitle());
                 // Loop to find the maximum longitude value from arraylist.
                 for (int i = 1; i < lengthArray; i++) {
                     double longValue = Double.parseDouble(eq.get(i).getLongitude());

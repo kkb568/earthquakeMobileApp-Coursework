@@ -76,7 +76,7 @@
             android:text="Deepest earthquake (within last 60 days)"
             style="@style/textViewHeading"/>
         <TextView
-            android:id="@+id/dataDisplayDepth"
+            android:id="@+id/dataDisplayDeepest"
             android:layout_width="300sp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -84,6 +84,24 @@
             style="@style/dataResultTextView"/>
         <Button
             android:id="@+id/deepestEarthquakeContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/viewMoreButton"
+            style="@style/searchButton"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shallowest earthquake (within last 60 days)"
+            style="@style/textViewHeading"/>
+        <TextView
+            android:id="@+id/dataDisplayShallowest"
+            android:layout_width="300sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text=""
+            style="@style/dataResultTextView"/>
+        <Button
+            android:id="@+id/shallowestEarthquakeContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/viewMoreButton"

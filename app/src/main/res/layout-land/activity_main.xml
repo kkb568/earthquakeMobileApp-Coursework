@@ -76,7 +76,7 @@
             android:text="Deepest earthquake (within last 60 days)"
             style="@style/textViewHeading"/>
         <TextView
-            android:id="@+id/dataDisplayDepth"
+            android:id="@+id/dataDisplayDeepest"
             android:layout_width="500sp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -91,11 +91,29 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Shallowest earthquake (within last 60 days)"
+            style="@style/textViewHeading"/>
+        <TextView
+            android:id="@+id/dataDisplayShallowest"
+            android:layout_width="500sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text=""
+            style="@style/dataResultTextView"/>
+        <Button
+            android:id="@+id/shallowestEarthquakeContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/viewMoreButton"
+            style="@style/searchButton"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Nearest from Mauritius"
             style="@style/textViewHeading"/>
         <Spinner
             android:id="@+id/directionSpinner"
-            android:layout_width="200sp"
+            android:layout_width="400sp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/spinner"/>
