@@ -42,7 +42,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private EditText date;
     private TextView dataDisplayMagnitude, dataDisplayDeepest, dataDisplayShallowest;
-    private Button largestMagnitudeContent, deepestEarthquakeContent, shallowestEarthquakeContent, searchByLocation, searchByDate;
+    private Button largestMagnitudeContent, deepestEarthquakeContent, shallowestEarthquakeContent,
+            searchByLocation, searchByDate, viewAllEarthquakes;
     private Spinner spinner;
     static ArrayList<Earthquake> items = new ArrayList<>();
 
@@ -70,6 +71,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         searchByDate = findViewById(R.id.searchByDate);
         searchByDate.setOnClickListener(this);
+
+        viewAllEarthquakes = findViewById(R.id.viewAllEarthquakes);
+        viewAllEarthquakes.setOnClickListener(this);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.directions, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -114,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             URLConnection yc;
             InputStream stream = null;
             Earthquake eq = new Earthquake();
+            items = new ArrayList<>();
 
             Log.e("MyTag","in run");
 
@@ -272,6 +277,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if (v == searchByDate) {
             displayEarthquakeByDate();
         }
+        else if (v == viewAllEarthquakes) {
+            displayAllEarthquakes();
+        }
     }
 
     // Used to show the calendar when user searches for earthquake by date
@@ -425,6 +433,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
         // The Intent instance is then used to open a new activity showing list of all earthquakes with the same date part details as the input.
+        Intent i = new Intent(MainActivity.this, ListEarthquakes.class);
+        i.putStringArrayListExtra("Titles", titles);
+        startActivity(i);
+    }
+
+    // Method for showcasing the listview page of all earthquakes.
+    public void displayAllEarthquakes() {
+        // Create new arraylist of type string
+        ArrayList<String> titles = new ArrayList<>();
+        for (Earthquake data2 : items) {
+            titles.add(data2.getTitle());
+        }
+        // The Intent instance is then used to open a new activity showing list of all earthquakes.
         Intent i = new Intent(MainActivity.this, ListEarthquakes.class);
         i.putStringArrayListExtra("Titles", titles);
         startActivity(i);

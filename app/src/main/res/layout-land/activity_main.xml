@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Name: Brian, Student ID: S2004892-->
+<!--Name: Brian Koome, Student ID: S2004892-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -49,6 +49,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Search by date"
+                style="@style/searchButton"/>
+            <Button
+                android:id="@+id/viewAllEarthquakes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View all earthquakes"
                 style="@style/searchButton"/>
         </LinearLayout>
 

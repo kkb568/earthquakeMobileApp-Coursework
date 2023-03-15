@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Name: Brian, Student ID: S2004892-->
+<!--Name: Brian Koome, Student ID: S2004892-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,18 +12,77 @@
         android:layout_height="wrap_content"
         android:text="@string/list_heading"
         style="@style/textViewHeading"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_marginBottom="15sp"
+        android:layout_marginStart="15sp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/lightBlue"
+            android:layout_marginEnd="5sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Weak"
+            android:textColor="@color/black"
+            android:layout_marginEnd="10sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/lightGreen"
+            android:layout_marginEnd="5sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Moderate"
+            android:textColor="@color/black"
+            android:layout_marginEnd="10sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/yellow"
+            android:layout_marginEnd="5sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Strong"
+            android:textColor="@color/black"
+            android:layout_marginEnd="10sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/orange"
+            android:layout_marginEnd="5sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Very strong"
+            android:textColor="@color/black"
+            android:layout_marginEnd="10sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/red"
+            android:layout_marginEnd="5sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Violent"
+            android:textColor="@color/black"/>
+    </LinearLayout>
     <ListView
         android:id="@+id/listEarthquakes"
         android:layout_width="match_parent"
-        android:layout_height="0sp"
-        android:layout_weight="1"
-        android:layout_marginBottom="10sp"
-        android:scrollbars="vertical"/>
-    <TextView
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/colorRepresentation"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        android:padding="10sp"/>
+        android:layout_marginBottom="10sp"/>
 </LinearLayout>
