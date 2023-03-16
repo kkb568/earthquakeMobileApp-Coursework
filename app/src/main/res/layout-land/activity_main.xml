@@ -27,12 +27,6 @@
                 android:inputType="text"
                 android:background="@drawable/edit_text_border"
                 style="@style/editText"/>
-            <Button
-                android:id="@+id/searchByLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Search by location"
-                style="@style/searchButton"/>
             <EditText
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
@@ -45,10 +39,10 @@
                 android:background="@drawable/edit_text_border"
                 style="@style/editText"/>
             <Button
-                android:id="@+id/searchByDate"
+                android:id="@+id/searchButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Search by date"
+                android:text="Search"
                 style="@style/searchButton"/>
             <Button
                 android:id="@+id/viewAllEarthquakes"
