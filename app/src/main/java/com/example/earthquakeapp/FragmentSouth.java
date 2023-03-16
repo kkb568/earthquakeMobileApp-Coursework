@@ -106,6 +106,7 @@ public class FragmentSouth extends Fragment {
                 startActivity(i);
             }
         }
+        // Check if there isn't any earthquake found after the loop process.
         if (!foundEarthquake) {
             String notFoundMessage = "No earthquake to display.";
             Toast.makeText(getContext(), notFoundMessage, Toast.LENGTH_LONG).show();

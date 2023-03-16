@@ -4,4 +4,5 @@
     <string name="list_heading">Click item(s) to view more details</string>
     <string name="viewMoreButton">View more details</string>
     <string name="dataDisplayNearest">No earthquake found.</string>
+    <string name="networkErrorImage">Symbol representing no internet connection</string>
 </resources>

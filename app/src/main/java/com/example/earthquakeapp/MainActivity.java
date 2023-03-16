@@ -6,7 +6,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +39,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 
 // Name: Brian Koome
 // Student ID: S2004892
@@ -50,7 +55,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Show the no_connection layout if there is no internet connection.
+        if (!isConnected()) {
+            setContentView(R.layout.no_connection);
+            return;
+        }
         setContentView(R.layout.activity_main);
+
         dataDisplayMagnitude = findViewById(R.id.dataDisplayMagnitude);
         dataDisplayDeepest = findViewById(R.id.dataDisplayDeepest);
         dataDisplayShallowest = findViewById(R.id.dataDisplayShallowest);
@@ -100,6 +111,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String urlSource = "https://quakes.bgs.ac.uk/feeds/WorldSeismology.xml";
         new Thread(new Task(urlSource)).start();
         Log.e("MyTag","after startProgress");
+    }
+
+    // Method used to check if the user is connected to the internet before the app is being loaded.
+    // Checks for any connection via mobile data or wifi.
+    private boolean isConnected() {
+        boolean connection = false;
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            Network n = cm.getActiveNetwork();
+            if (n != null) {
+                NetworkCapabilities nc = cm.getNetworkCapabilities(n);
+                connection = nc.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || nc.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || nc.hasTransport(NetworkCapabilities.TRANSPORT_VPN);
+            }
+        }
+        return connection;
     }
 
     private class Task implements Runnable
@@ -192,9 +218,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             {
                 public void run() {
                     Log.d("UI thread", "I am the UI thread");
-                    showLargestMagnitude(items);
-                    showDeepest(items);
-                    showShallowest(items);
+                    try {
+                        showLargestMagnitude(items);
+                        showDeepest(items);
+                        showShallowest(items);
+                    } catch (NoSuchElementException nse) {
+                        String ioErrorMessage = "Lost service connection.";
+                        Toast.makeText(getApplicationContext(), ioErrorMessage, Toast.LENGTH_LONG).show();
+                    }
                 }
             });
         }
@@ -318,8 +349,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // it gets the other information about the earthquake, such as depth and magnitude, and inserts it to the specific_earthquake_details activity.
     public void viewDetailedContent(TextView tv) {
         String title = tv.getText().toString();
+        boolean foundEarthquake = false;
         for (Earthquake data : items) {
             if (data.getTitle().equals(title)) {
+                foundEarthquake = true;
                 Intent i = new Intent(MainActivity.this, SpecificEarthquakeDetails.class);
                 i.putExtra("location", getLocation(data.getDescription()));
                 i.putExtra("latitude", data.getLatitude());
@@ -329,6 +362,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 i.putExtra("magnitude", getMagnitude(data.getDescription()));
                 startActivity(i);
             }
+        }
+        // Check if there isn't any earthquake found after the loop process.
+        if (!foundEarthquake) {
+            String notFoundMessage = "No earthquake to display.";
+            Toast.makeText(getApplicationContext(), notFoundMessage, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -442,6 +480,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void displayAllEarthquakes() {
         // Create new arraylist of type string
         ArrayList<String> titles = new ArrayList<>();
+        // Check if items arraylist contains any instance.
+        if (items.size() == 0) {
+            String nullMessage = "No earthquake to display.";
+            Toast.makeText(getApplicationContext(), nullMessage, Toast.LENGTH_LONG).show();
+            return;
+        }
         for (Earthquake data2 : items) {
             titles.add(data2.getTitle());
         }
