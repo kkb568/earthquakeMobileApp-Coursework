@@ -1,128 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Name: Brian Koome, Student ID: S2004892-->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/swipeRefresh"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20sp"
-            android:background="@color/brown"
-            android:layout_marginBottom="20sp">
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/earthquakeLocation"
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20sp"
+                android:background="@color/brown"
+                android:layout_marginBottom="20sp">
+
+                <EditText
+                    android:id="@+id/earthquakeLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Search earthquake by location"
+                    android:inputType="text"
+                    android:background="@drawable/edit_text_border"
+                    style="@style/editText"/>
+                <EditText
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Search earthquake by date"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:background="@drawable/edit_text_border"
+                    style="@style/editText"/>
+                <Button
+                    android:id="@+id/searchButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Search"
+                    style="@style/searchButton"/>
+                <Button
+                    android:id="@+id/viewAllEarthquakes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="View all earthquakes"
+                    style="@style/searchButton"/>
+            </LinearLayout>
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Search earthquake by location"
-                android:inputType="text"
-                android:background="@drawable/edit_text_border"
-                style="@style/editText"/>
-            <EditText
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
+                android:text="Largest magnitude earthquake (within last 60 days)"
+                style="@style/textViewHeading"/>
+            <TextView
+                android:id="@+id/dataDisplayMagnitude"
+                android:layout_width="300sp"
                 android:layout_height="wrap_content"
-                android:hint="Search earthquake by date"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:background="@drawable/edit_text_border"
-                style="@style/editText"/>
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                style="@style/dataResultTextView"/>
             <Button
-                android:id="@+id/searchButton"
+                android:id="@+id/largestMagnitudeContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Search"
+                android:text="@string/viewMoreButton"
                 style="@style/searchButton"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Deepest earthquake (within last 60 days)"
+                style="@style/textViewHeading"/>
+            <TextView
+                android:id="@+id/dataDisplayDeepest"
+                android:layout_width="300sp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                style="@style/dataResultTextView"/>
             <Button
-                android:id="@+id/viewAllEarthquakes"
+                android:id="@+id/deepestEarthquakeContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="View all earthquakes"
+                android:text="@string/viewMoreButton"
                 style="@style/searchButton"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shallowest earthquake (within last 60 days)"
+                style="@style/textViewHeading"/>
+            <TextView
+                android:id="@+id/dataDisplayShallowest"
+                android:layout_width="300sp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                style="@style/dataResultTextView"/>
+            <Button
+                android:id="@+id/shallowestEarthquakeContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/viewMoreButton"
+                style="@style/searchButton"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nearest from Mauritius"
+                style="@style/textViewHeading"/>
+            <Spinner
+                android:id="@+id/directionSpinner"
+                android:layout_width="200sp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/spinner"/>
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/direction_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20sp"
+                android:name="com.example.earthquakeapp.FragmentNorth"
+                tools:layout="@layout/fragment_northern"/>
         </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Largest magnitude earthquake (within last 60 days)"
-            style="@style/textViewHeading"/>
-        <TextView
-            android:id="@+id/dataDisplayMagnitude"
-            android:layout_width="300sp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text=""
-            style="@style/dataResultTextView"/>
-        <Button
-            android:id="@+id/largestMagnitudeContent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/viewMoreButton"
-            style="@style/searchButton"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Deepest earthquake (within last 60 days)"
-            style="@style/textViewHeading"/>
-        <TextView
-            android:id="@+id/dataDisplayDeepest"
-            android:layout_width="300sp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text=""
-            style="@style/dataResultTextView"/>
-        <Button
-            android:id="@+id/deepestEarthquakeContent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/viewMoreButton"
-            style="@style/searchButton"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Shallowest earthquake (within last 60 days)"
-            style="@style/textViewHeading"/>
-        <TextView
-            android:id="@+id/dataDisplayShallowest"
-            android:layout_width="300sp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text=""
-            style="@style/dataResultTextView"/>
-        <Button
-            android:id="@+id/shallowestEarthquakeContent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/viewMoreButton"
-            style="@style/searchButton"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nearest from Mauritius"
-            style="@style/textViewHeading"/>
-        <Spinner
-            android:id="@+id/directionSpinner"
-            android:layout_width="200sp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/spinner"/>
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/direction_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20sp"
-            android:name="com.example.earthquakeapp.FragmentNorth"
-            tools:layout="@layout/fragment_northern"/>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

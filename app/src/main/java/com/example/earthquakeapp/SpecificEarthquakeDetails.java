@@ -65,7 +65,7 @@ public class SpecificEarthquakeDetails extends AppCompatActivity implements OnMa
         mapView.getMapAsync(this);
     }
 
-    // Method for setting the marker for the specific earthquake location and zoom ui setting.
+    // Method for setting the marker for the specific earthquake location and the zoom ui setting.
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         String getLatitude = getIntent().getStringExtra("latitude");

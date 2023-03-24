@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -17,7 +18,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button largestMagnitudeContent, deepestEarthquakeContent, shallowestEarthquakeContent,
             searchButton, viewAllEarthquakes;
     private Spinner spinner;
+    private SwipeRefreshLayout swipeRefreshLayout;
     static ArrayList<Earthquake> items = new ArrayList<>();
 
     @Override
@@ -108,6 +109,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String urlSource = "https://quakes.bgs.ac.uk/feeds/WorldSeismology.xml";
         new Thread(new Task(urlSource)).start();
         Log.e("MyTag","after startProgress");
+
+        // Used to show the 'pull to refresh' icon when user pulls when at the top of screen.
+        swipeRefreshLayout = findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            // If connected, rerun the run method in the Task class to update the items arraylist
+            // and set the input in the date edittext to no input.
+            // If not, show the no_connection layout.
+            if (!isConnected()) {
+                setContentView(R.layout.no_connection);
+            }
+            else {
+                new Thread(new Task(urlSource)).start();
+                date.setText("");
+            }
+            // Remove the 'pull to refresh' icon after the update process is done.
+            swipeRefreshLayout.setRefreshing(false);
+        });
     }
 
     // Method used to check if the user is connected to the internet before the app is being loaded.
@@ -162,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //
                 // Now read the data. Make sure that there are no specific headers
                 // in the data file that you need to ignore.
-                // The useful data that you need is in each of the item entries
+                // The useful data that you need is in each of the item entries.
                 //
                 while (eventType != XmlPullParser.END_DOCUMENT)
                 {
@@ -211,18 +229,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
             }
-            MainActivity.this.runOnUiThread(new Runnable()
-            {
-                public void run() {
-                    Log.d("UI thread", "I am the UI thread");
-                    try {
-                        showLargestMagnitude(items);
-                        showDeepest(items);
-                        showShallowest(items);
-                    } catch (NoSuchElementException nse) {
-                        String ioErrorMessage = "Lost service connection.";
-                        Toast.makeText(getApplicationContext(), ioErrorMessage, Toast.LENGTH_LONG).show();
-                    }
+            MainActivity.this.runOnUiThread(() -> {
+                Log.d("UI thread", "I am the UI thread");
+                try {
+                    showLargestMagnitude(items);
+                    showDeepest(items);
+                    showShallowest(items);
+                } catch (NoSuchElementException nse) {
+                    String ioErrorMessage = "Lost service connection.";
+                    Toast.makeText(getApplicationContext(), ioErrorMessage, Toast.LENGTH_LONG).show();
                 }
             });
         }
@@ -317,19 +332,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         DatePickerDialog dpd = new DatePickerDialog(
                 MainActivity.this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        String selectedDate = String.format(Locale.ENGLISH,"%d/%d/%d", dayOfMonth, month + 1, year);
-                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-                        try {
-                            Date stringDate = formatter.parse(selectedDate);
-                            SimpleDateFormat formatter1 = new SimpleDateFormat("E, dd MMM yyyy", Locale.ENGLISH);
-                            String stringDate1 = formatter1.format(stringDate);
-                            date.setText(stringDate1);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                (view, year1, month1, dayOfMonth) -> {
+                    String selectedDate = String.format(Locale.ENGLISH,"%d/%d/%d", dayOfMonth, month1 + 1, year1);
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+                    try {
+                        Date stringDate = formatter.parse(selectedDate);
+                        SimpleDateFormat formatter1 = new SimpleDateFormat("E, dd MMM yyyy", Locale.ENGLISH);
+                        String stringDate1 = formatter1.format(stringDate);
+                        date.setText(stringDate1);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
                 },
                 year,month,day);
@@ -395,10 +407,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void displayEarthquakes() {
         EditText insertedLocation = findViewById(R.id.earthquakeLocation);
-        // Convert input to string, with whitespaces at the end of the string already removed.
+        // Convert location input to string, with whitespaces at the end of the string already removed.
         String location = insertedLocation.getText().toString().stripTrailing();
         EditText insertedDate = findViewById(R.id.date);
-        // Convert input to string.
+        // Convert date input to string.
         String date = insertedDate.getText().toString();
         // Check if inputs from 'Search earthquake by location' and 'Search earthquake by date' edittext views are empty strings.
         if (location.equals("") && date.equals("")) {
